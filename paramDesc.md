@@ -1,3 +1,5 @@
+E:\tools\mq\rabbitmq_server-3.7.18\sbin
+
 # RabbitMQ
 ### 参数说明文档
 #### [1] 声明队列 持久化
@@ -15,6 +17,21 @@ channel.QueueDeclare(name, durable, autoDelete, exclusive, noWait, args):
 channel.basicPublish（“”，“ task_queue”，
 MessageProperties.PERSISTENT_TEXT_PLAIN，
 message.getBytes（））;
+参数：
+void basicPublish(String exchange, String routingKey, boolean mandatory, 
+boolean immediate, BasicProperties props, byte[] body) throws IOException;
+exchange：名称
+routingKey：路由键，#匹配0个或多个单词，*匹配一个单词，在topic exchange做消息转发用
+
+mandatory：为true时如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue，那么会调用
+basic.return方法将消息返还给生产者。为false时出现上述情形broker会直接将消息扔掉
+　
+immediate：为true时如果exchange在将消息route到queue(s)时发现对应的queue上没有消费者，那么这条消息不会放入队列中。当与消息routeKey关联的所有queue(一个或多个)都没有消费者时，该消息会通过basic.return方法返还给生产者。
+
+props：需要注意的是BasicProperties.deliveryMode，1:不持久化 2：持久化 这里指的是消息的持久化，配合channel(durable=true),queue(durable)可以实现，即使服务器宕机，消息仍然保留
+
+body：要发送的信息
+
 #### [3]消费者
 channel.basicConsume(TASK_QUEUE_NAME, true, deliverCallback, consumerTag -> { });
 * 第二个参数就是自定确认：设置为true就表示自动确认
@@ -44,4 +61,7 @@ private String clusterId;
 
 
 * [原文链接](https://blog.csdn.net/jj546630576/article/details/102498032)
+
+* [参数](https://www.jianshu.com/p/537cb84ba72f)
+
 
