@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Content:
  */
 @Slf4j
-public class ReceiveLogsDirect4 {
+public class ReceiveLogsDirect {
     private static final  String EXCHAGNE_NAME="direct_logs";
 
     public static void main(String[] args) throws Exception {
@@ -23,7 +23,7 @@ public class ReceiveLogsDirect4 {
         //创建随机队列（服务停止，自动删除）
         String queueName =channel.queueDeclare().getQueue();
         if (args.length < 1) {
-            System.err.println("Usage: ReceiveLogsDirect4 [info] [warning] [error]");
+            System.err.println("Usage: ReceiveLogsDirect [info] [warning] [error]");
             System.exit(1);
         }
         //交换机 绑定队列和路由key:info

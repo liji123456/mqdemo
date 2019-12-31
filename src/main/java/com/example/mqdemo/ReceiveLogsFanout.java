@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Content:
  */
 @Slf4j
-public class ReceiveLogs3 {
+public class ReceiveLogsFanout {
     private static final String EXCHANGE_NAME = "logs";
 
     public static void main(String[] args) throws Exception {
