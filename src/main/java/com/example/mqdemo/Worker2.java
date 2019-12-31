@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Content:
  */
 @Slf4j
-public class Worker {
+public class Worker2 {
     private static final String TASK_QUEUE_NAME = "task_queue";
 
     public static void main(String[] args) throws Exception {

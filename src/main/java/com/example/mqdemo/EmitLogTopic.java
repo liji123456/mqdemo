@@ -9,28 +9,30 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @Version 1.0
  * @Author:liji
- * @Date:2019/11/18
- * @Content: 按路由匹配
- */
-@Slf4j
-public class EmitLogDirect {
+ * @Date:2019/12/25
+ * @Content:
+ * 逻辑类似于直接交换的逻辑
+ *（星号）可以代替一个单词。
+＃（哈希）可以替代零个或多个单词。
 
-    private static final String EXCHANGE_NAME = "direct_logs";
+ */
+
+@Slf4j
+public class EmitLogTopic {
+    private static final String EXCHANGE_NAME = "topic_logs";
 
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            //声明交换机类型为DIRECT
-            channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
-            String severity = getSeverity(args);
+            //声明交换机类型为TOPIC
+            channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
+            String routingKey  = getSeverity(args);
             String message = getMessage(args);
-            log.info("severity:{}",severity);
-            log.info("message:{}",message);
             //绑定routingKey:info，发送消息到交换机
-            channel.basicPublish(EXCHANGE_NAME, severity, null, message.getBytes("utf-8"));
-            log.info(" [x] Sent '" + severity + "':'" + message + "'");
+            channel.basicPublish(EXCHANGE_NAME, routingKey , null, message.getBytes("utf-8"));
+            log.info(" [x] Sent '" + routingKey  + "':'" + message + "'");
 
         }
     }

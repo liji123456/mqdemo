@@ -10,27 +10,24 @@ import lombok.extern.slf4j.Slf4j;
  * @Version 1.0
  * @Author:liji
  * @Date:2019/11/18
- * @Content: 按路由匹配
+ * @Content: 只能进行无意识的广播
  */
 @Slf4j
-public class EmitLogDirect {
+public class EmitLogFanout {
 
-    private static final String EXCHANGE_NAME = "direct_logs";
+    private static final String EXCHANGE_NAME = "logs";
 
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
-            //声明交换机类型为DIRECT
-            channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
-            String severity = getSeverity(args);
+            Channel channel = connection.createChannel()) {
+            //声明交换机类型为 FANOUT
+            channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
             String message = getMessage(args);
-            log.info("severity:{}",severity);
-            log.info("message:{}",message);
-            //绑定routingKey:info，发送消息到交换机
-            channel.basicPublish(EXCHANGE_NAME, severity, null, message.getBytes("utf-8"));
-            log.info(" [x] Sent '" + severity + "':'" + message + "'");
+            //发送消息
+            channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("utf-8"));
+            log.info(" [x] Sent '" +  message + "'");
 
         }
     }

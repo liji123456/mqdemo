@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  * @Date:2019/10/16
  * @Content:
  */
-public class NewTask {
+public class NewTask2 {
     private static final String TASK_QUEUE_NAME = "task_queue";
 
 
